@@ -1,11 +1,9 @@
 package com.ramazan.weather.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ramazan.weather.controller.VisualCrossingApi;
 import com.ramazan.weather.entity.CityWeather;
 import com.ramazan.weather.repository.CityWeatherRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
@@ -14,26 +12,25 @@ import java.util.Optional;
 public class WeatherService
 {
     private final CityWeatherRepository cityWeatherRepository;
-    private final VisualCrossingApi visualCrossingApi;
+    private final VisualCrossingService visualCrossingService;
 
-    public Optional<CityWeather> GetCityWeather(String id){
-        return cityWeatherRepository.findById(id);
+    public CityWeather GetCityWeather(String id){
+        Optional<CityWeather> cityWeatherOptional = cityWeatherRepository.findById(id);
+
+        return cityWeatherOptional.orElseGet(() -> this.CityWeatherProcess(id));
     }
 
     public CityWeather CityWeatherProcess(String city){
         CityWeather cityWeather = null;
 
         try{
-            String cityWeatherJSON = visualCrossingApi.GetWeatherJSON(city);
+            String cityWeatherJSON = visualCrossingService.GetWeatherJSON(city);
             ObjectMapper objectMapper = new ObjectMapper();
             cityWeather = objectMapper.readValue(cityWeatherJSON, CityWeather.class);
+            cityWeatherRepository.save(cityWeather);
         }
         catch(Exception e) {
             System.out.println(e.getMessage());
-        }
-
-        if(cityWeather != null){
-            cityWeatherRepository.save(cityWeather);
         }
 
         return cityWeather;

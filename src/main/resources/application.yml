@@ -3,3 +3,7 @@ spring:
     mongodb:
       database: mongo-weather
       uri: mongodb://localhost:27017
+    visualCrossing:
+      url: https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/
+      key: ?key=N5PY9Y4DPDRC3CC8H755RZ3YW
+

@@ -1,5 +1,0 @@
-spring:
-  data:
-    mongodb:
-      database: mongo-weather
-      uri: mongodb://localhost:27017

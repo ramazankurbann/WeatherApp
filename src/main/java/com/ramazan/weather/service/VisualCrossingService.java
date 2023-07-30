@@ -1,21 +1,22 @@
-package com.ramazan.weather.controller;
+package com.ramazan.weather.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.client.RestTemplate;
 
-@Controller
+@Component
 @RequiredArgsConstructor
-public class VisualCrossingApi
+public class VisualCrossingService
 {
     private final RestTemplate restTemplate;
 
-    String url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/";
-    String key = "?key=N5PY9Y4DPDRC3CC8H755RZ3YW";
+    @Value("${spring.data.visualCrossing.url}")
+    String url;
+    @Value("${spring.data.visualCrossing.key}")
+    String key;
 
-    @GetMapping
     public String GetWeatherJSON(String city){
         StringBuilder sb = new StringBuilder();
         sb.append(url);
